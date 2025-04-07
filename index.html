@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Multiple Branch Redirect</title>
+    <script>
+        function redirect() {
+            const urls = {
+                "branch1": "www.gargantua.pw",
+                "branch2": "m11.crux.wang",
+                "branch3": "crux.wang:8080"
+            };
+            const defaultUrl = urls.branch1;
+
+            const userChoice = document.querySelector('input[name="branch"]:checked');
+
+            if (userChoice && urls[userChoice.value]) {
+                window.location.href = urls[userChoice.value];
+            } else {
+                window.location.href = defaultUrl;
+            }
+        }
+
+        setTimeout(() => {
+            document.getElementById('redirectButton').click();
+        }, 3000);
+    </script>
+</head>
+<body>
+    <h1>Choose the redirection location：</h1>
+    <form>
+        <label>
+            <input type="radio" name="branch" value="branch1"> Direction 1
+        </label><br>
+        <label>
+            <input type="radio" name="branch" value="branch2"> Direction 2
+        </label><br>
+        <label>
+            <input type="radio" name="branch" value="branch3"> Direction 3
+        </label><br>
+    </form>
+    <p>Redirect to default location if no choice</p>
+    <button id="redirectButton" onclick="redirect()">Redirect</button>
+</body>
+</html>
