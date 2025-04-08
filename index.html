@@ -133,7 +133,7 @@
         </div>
 
         <button id="redirectButton" onclick="redirect()">
-            <span class="loader"></span>
+            <span class="loader" id="loader"></span>
             Connect Now
         </button>
 
@@ -149,12 +149,13 @@
         "branch3": "http://8.153.196.81:8082"
     };
 
-    let countdown = 3;
+    let countdown = 1;
     let redirectTimeout = setTimeout(performRedirect, 1000);
     let countdownUpdater = null;
     const countdownElement = document.getElementById('countdown');
 
     function updateCountdown() {
+        document.getElementById("loader").style.display = "inline-block";
         if (countdown < 0) return;
         countdownElement.textContent = 
             `Auto-redirecting to primary server in ${countdown} seconds...`;
@@ -167,22 +168,23 @@
         window.location.href = selected?.value ? urls[selected.value] : urls.branch1;
     }
 
-    function redirect() {
+function redirect() {
+    clearTimeout(redirectTimeout);
+    clearTimeout(countdownUpdater);
+    document.getElementById("loader").style.display = "none"; 
+    countdownElement.textContent = "Redirecting now...";
+    performRedirect();
+}
+
+document.querySelectorAll('.radio-card input').forEach(radio => {
+    radio.addEventListener('change', () => {
         clearTimeout(redirectTimeout);
-        clearTimeout(countdownUpdater); 
-        countdownElement.textContent = "Redirecting now..."; 
-        performRedirect();
-    }
-
-    document.querySelectorAll('.radio-card input').forEach(radio => {
-        radio.addEventListener('change', () => {
-            clearTimeout(redirectTimeout);
-            clearTimeout(countdownUpdater); 
-            countdownElement.textContent = "Selection confirmed - click Connect Now";
-        });
+        clearTimeout(countdownUpdater);
+        document.getElementById("loader").style.display = "none"; 
+        countdownElement.textContent = "Selection confirmed - click Connect Now";
     });
+});
 
-    updateCountdown();
 </script>
 
 </body>
