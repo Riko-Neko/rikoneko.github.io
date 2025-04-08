@@ -142,44 +142,48 @@
         </div>
     </div>
 
-    <script>
-        const urls = {
-            "branch1": "http://8.153.196.81:8081",
-            "branch2": "http://8.153.196.81:8080",
-            "branch3": "http://8.153.196.81:8082"
-        };
+<script>
+    const urls = {
+        "branch1": "http://8.153.196.81:8081",
+        "branch2": "http://8.153.196.81:8080",
+        "branch3": "http://8.153.196.81:8082"
+    };
 
-        let countdown = 3;
-        let redirectTimeout = setTimeout(performRedirect, 1000);
-        const countdownElement = document.getElementById('countdown');
+    let countdown = 3;
+    let redirectTimeout = setTimeout(performRedirect, 1000);
+    let countdownUpdater = null;
+    const countdownElement = document.getElementById('countdown');
 
-        function updateCountdown() {
-            countdownElement.textContent = 
-                `Auto-redirecting to primary server in ${countdown} seconds...`;
-            countdown--;
-            if (countdown >= 0) {
-                setTimeout(updateCountdown, 1000);
-            }
-        }
+    function updateCountdown() {
+        if (countdown < 0) return;
+        countdownElement.textContent = 
+            `Auto-redirecting to primary server in ${countdown} seconds...`;
+        countdown--;
+        countdownUpdater = setTimeout(updateCountdown, 1000); 
+    }
 
-        function performRedirect() {
-            const selected = document.querySelector('input[name="branch"]:checked');
-            window.location.href = selected?.value ? urls[selected.value] : urls.branch1;
-        }
+    function performRedirect() {
+        const selected = document.querySelector('input[name="branch"]:checked');
+        window.location.href = selected?.value ? urls[selected.value] : urls.branch1;
+    }
 
-        function redirect() {
+    function redirect() {
+        clearTimeout(redirectTimeout);
+        clearTimeout(countdownUpdater); 
+        countdownElement.textContent = "Redirecting now..."; 
+        performRedirect();
+    }
+
+    document.querySelectorAll('.radio-card input').forEach(radio => {
+        radio.addEventListener('change', () => {
             clearTimeout(redirectTimeout);
-            performRedirect();
-        }
-
-        document.querySelectorAll('.radio-card input').forEach(radio => {
-            radio.addEventListener('change', () => {
-                clearTimeout(redirectTimeout);
-                countdownElement.textContent = "Selection confirmed - click Connect Now";
-            });
+            clearTimeout(countdownUpdater); 
+            countdownElement.textContent = "Selection confirmed - click Connect Now";
         });
+    });
 
-        updateCountdown();
-    </script>
+    updateCountdown();
+</script>
+
 </body>
 </html>
