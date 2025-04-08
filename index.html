@@ -106,21 +106,22 @@
 <body>
     <div class="container">
         <h1>Server Redirection Portal</h1>
+        <h2>服务器跳转页...请稍后</h2>
         
         <div class="radio-group">
             <label class="radio-card">
                 <input type="radio" name="branch" value="branch1">
-                Server from Scutum in ZZU (Primary)
+                Server from Scutum (Primary)
             </label>
             
             <label class="radio-card">
                 <input type="radio" name="branch" value="branch2">
-                Server from aries
+                Server from Aries
             </label>
             
             <label class="radio-card">
                 <input type="radio" name="branch" value="branch3">
-                Server
+                Server NOT USE (default for Crux)
             </label>
         </div>
 
@@ -142,7 +143,7 @@
         };
 
         let countdown = 3;
-        let redirectTimeout = setTimeout(performRedirect, 3000);
+        let redirectTimeout = setTimeout(performRedirect, 1000);
         const countdownElement = document.getElementById('countdown');
 
         function updateCountdown() {
